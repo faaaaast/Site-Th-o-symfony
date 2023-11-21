@@ -1,0 +1,31 @@
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+ajouter_au_panier:
+    path: /ajouter-au-panier/{platId}/{platImage}/{platPrix}/{platDescription}
+    controller: App\Controller\RestoController::ajouterAuPanier
+    methods: ['GET','POST']
+app_panier:
+    path: /panier
+    controller: App\Controller\RestoController::voirPanier
+chef_dashboard:
+    path: '/chef/dashboard'
+    controller: 'App\Controller\ChefController::dashboard'
+    methods: ['GET', 'POST']
+modifier_plat:
+    path: '/chef/modifier/{id}'
+    controller: 'App\Controller\ChefController::modifierPlat'
+    methods: ['GET', 'POST']
+    requirements:
+        id: '\d+'
+supprimer_plat:
+    path: '/chef/supprimer/{id}'
+    controller: 'App\Controller\ChefController::supprimerPlat'
+    requirements:
+        id: '\d+'
+app_finaliser:
+    path: /finaliser
+    controller: App\Controller\FinaliserController::index
+    methods: [GET, POST]

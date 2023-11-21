@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}The District{% endblock %}
+
+{% block body %}
+ <style>
+            body {
+                background-color: pink;
+            }
+            .card{
+				background-color: pink;
+			}
+			h1{
+				color: pink;
+			}
+			.footer {
+        background-color: #fff; /* Couleur de fond blanc */
+        padding: 20px; /* Ajoutez un espacement si nécessaire */
+    }
+            
+        </style>
+<br><br><br><br>
+{% if app.user %}
+<div style="text-align:center"><h1><b><u>Bonjour {{ app.user.prenom }}</u></b></h1></div>
+{% else %}
+<div style="text-align:center"><h1><b><u>Bonjour  Visiteur</u></b></h1></div>
+{% endif %}
+<div class="row d-flex justify-content-center">
+    <!-- Balise video pour afficher une vidéo en arrière-plan -->
+    <div class="col-md-6">
+        <video class="error-video" controls loop muted style="max-width: 100%; height: auto;">
+            <source src="{{ asset('img/video/video2.mp4') }}" type="video/mp4">
+            Votre navigateur ne prend pas en charge la lecture de vidéos.
+        </video>
+    </div>
+ 
+
+
+
+
+
+	<div class="row">
+					<div class="card my-5 border-0 rounded-0">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="card-body px-0">
+								<br><br>
+									<h3 class="card-title"><u>Notre restaurant</u></h3>
+									<br><br>
+									<p class="card-text">
+									 <p style="font-size: 18px;">Délicieusement connecté à tous les goûts.</p> 
+									 <p style="font-size: 18px;">The District, où la saveur urbaine rencontre la rapidité du fast-food !</p>
+									</p>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+									<div class="carousel-inner">
+										<div class="carousel-item active">
+    									<img src="{{ asset('img/carousel/carousel2.jpg') }}" class="d-block w-100" alt="..." />
+										</div>
+										<div class="carousel-item">
+   										<img src="{{ asset('img/carousel/carousel1.jpg') }}" class="d-block w-100" alt="..." />
+										</div>
+										<div class="carousel-item">
+    									<img src="{{ asset('img/carousel/carousel3.jpg') }}" class="d-block w-100" alt="..." />
+										</div>
+									</div>
+									<button
+										class="carousel-control-prev"
+										type="button"
+										data-bs-target="#carouselExampleControls"
+										data-bs-slide="prev"
+									>
+										<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+										<span class="visually-hidden">Previous</span> 	<!-- Crée un bouton pour faire défiler le carrousel vers la gauche -->
+									</button>
+									<button
+										class="carousel-control-next"
+										type="button"
+										data-bs-target="#carouselExampleControls"
+										data-bs-slide="next"
+									>
+										<span class="carousel-control-next-icon" aria-hidden="true"></span>
+										<span class="visually-hidden">Next</span> 	<!-- Crée un bouton pour faire défiler le carrousel vers la droite -->
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+{% endblock %}
