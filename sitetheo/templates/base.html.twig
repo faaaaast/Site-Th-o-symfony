@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
         		<script src="https://kit.fontawesome.com/88b3df3889.js" crossorigin="anonymous"></script>
     {% block stylesheets %}{% endblock %}
+            {{ encore_entry_link_tags('app') }}
 
     <!-- Popper.js and Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -18,6 +19,7 @@
 
     <!-- JavaScripts -->
     {% block javascripts %}{% endblock %}
+            {{ encore_entry_script_tags('app') }}
 </head>
 <style>
 a {
@@ -32,7 +34,7 @@ p {
 <nav class="cc-navbar navbar navbar-expand-lg navbar-dark position-fixed w-100">
     <div class="container-fluid">
         <!-- Marque de la navbar -->
-        <a class="navbar-brand text-uppercase mx-4 py-3 fw-bolder" style='color:white;' href="{{ path('app_accueil') }}">The District</a>
+        <a class="navbar-brand text-uppercase mx-4 py-3 fw-bolder" style='color:red;' href="{{ path('app_accueil') }} ">The District</a>
 
         <!-- Bouton de bascule pour la navbar en version mobile -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,33 +46,33 @@ p {
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <!-- Liens de navigation -->
                 <li class="nav-item pe-4">
-                    <a class="btn btn-order rounded-0 active" aria-current="page" href="{{ path('app_accueil') }}" style="color: #fff">Accueil</a>
+                    <a class="btn btn-order rounded-0 active" aria-current="page" href="{{ path('app_accueil') }}" style="background-color: orange; color: black">Accueil</a>
                 </li>
                 <li class="nav-item pe-4">
-                    <a class="btn btn-order rounded-0 active" href="{{ path('app_categories') }}" style="color: #fff">Découvrir</a>
+                    <a class="btn btn-order rounded-0 active" href="{{ path('app_categories') }}" style="background-color: yellow; color: black">Catégories</a>
                 </li>
                 <li class="nav-item pe-4">
-                    <a class="btn btn-order rounded-0 active" href="{{ path('app_plats') }}" style="color: #fff">Plats</a>
+                    <a class="btn btn-order rounded-0 active" href="{{ path('app_plats') }}" style="background-color: green; color: black">Plats</a>
                 </li>
                 <li class="nav-item pe-4">
-                    <a class="btn btn-order rounded-0 active" href="{{ path('app_panier') }}" style="color: #fff">Passer une commande</a>
+                    <a class="btn btn-order rounded-0 active" href="{{ path('app_panier') }}" style="background-color: blue; color: black">Passer une commande</a>
                 </li>
 
                 <!-- Lien spécifique au rôle "Chef" -->
                 {% if is_granted('ROLE_CHEF') %}
                     <li class="nav-item pe-4">
-                        <a class="btn btn-order rounded-0 {% if is_granted('ROLE_CHEF') %}active{% endif %}" href="{{ path('chef_dashboard') }}" style="color: #fff">Chef</a>
+                        <a class="btn btn-order rounded-0 {% if is_granted('ROLE_CHEF') %}active{% endif %}" href="{{ path('chef_dashboard') }}" style="background-color: pink; color: black">Chef</a>
                     </li>
                 {% endif %}
 
                 <!-- Lien de connexion/déconnexion -->
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                     <li class="nav-item pe-4 pt-2">
-                        <a class="btn btn-order rounded-0 active" href="{{ path('app_logout') }}" style="color: #fff">Déconnexion</a>
+                        <a class="btn btn-order rounded-0 active" href="{{ path('app_logout') }}" style="background-color: purple; color: black">Déconnexion</a>
                     </li>
                 {% else %}
                     <li class="nav-item pe-4 pt-2">
-                        <a class="btn btn-order rounded-0 active" href="{{ path('app_login') }}" style="color: #fff" id="monCompteBtn" title="Inscription/Connexion">Connexion</a>
+                        <a class="btn btn-order rounded-0 active" href="{{ path('app_login') }}" style="background-color: purple; color: black" id="monCompteBtn" title="Inscription/Connexion">Connexion</a>
                     </li>
                 {% endif %}
             </ul>
@@ -87,32 +89,32 @@ p {
     <div class="footer">
      <div class="reseau">
 			<a href="https://www.instagram.com/">
-				<i class="fa-brands fa-instagram fa-2xl" style="color: #000000; "></i>
+				<i class="fa-brands fa-instagram fa-2xl" style="color: orange; "></i>
 				<div class="insta">
 					<p>&emsp;</p>
 				</div>
 	
 				<a href="https://www.youtube.com/">
-					<i class="fa-brands fa-youtube fa-2xl" style="color: #000000;"></i>
+					<i class="fa-brands fa-youtube fa-2xl" style="color: yellow;"></i>
 					<div class="ytb">
 						<p>&emsp;</p>
 					</div>
 	
 					<a href="https://www.facebook.com">
-						<i class="fa-brands fa-facebook fa-2xl" style="color: #000000; "></i>
+						<i class="fa-brands fa-facebook fa-2xl" style="color: green; "></i>
 						<div class="fb">
 							<p>&emsp;</p>
 						</div>
 	
 	
 						<a href="https://twitter.com/">
-							<i class="fa-brands fa-twitter fa-2xl" style="color: #000000;"></i>
+							<i class="fa-brands fa-twitter fa-2xl" style="color: blue;"></i>
 							<div class="tw">
 								<p>&emsp;</p>
 							</div>
 	
 							<a href="https://www.linkedin.com/">
-								<i class="fa-brands fa-linkedin fa-2xl" style="color: #000000;"></i>
+								<i class="fa-brands fa-linkedin fa-2xl" style="color: purple;"></i>
 								<div class="lin">
 									<p>&emsp;</p>
 								</div>

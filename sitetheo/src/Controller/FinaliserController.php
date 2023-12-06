@@ -2,24 +2,41 @@
 
 namespace App\Controller;
 
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\FinaliserForm;
+use App\Form\PaymentForm;
 use App\Form\DeliveryFormType;
 use App\Repository\PlatsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Commande;
+use App\Entity\Detail;
 
 #[Route('/finaliser', name: 'app_finaliser')]
 class FinaliserController extends AbstractController
 {
-    
-    public function index(Request $request, PlatsRepository $platsRepository, EntityManagerInterface $entityManager): Response
+    public function index(Request $request, PlatsRepository $platsRepository, EntityManagerInterface $entityManager, SessionInterface $session): Response
     {
+        $paymentForm = $this->createForm(PaymentForm::class);
         $deliveryForm = $this->createForm(DeliveryFormType::class);
-        $finaliserForm = $this->createForm(FinaliserForm::class);
+        
+        // Récupère les éléments du panier ici
+        $panier = $session->get('panier', []); 
+
+        $total = 0;
+        foreach ($panier as $id => $quantity) {
+            $plat = $platsRepository->find($id);
+            $total += $plat->getPrix() * $quantity;
+        }
+
+        // Initialise le montant total du panier
+        $montantTotalPanier = $total; //$request->get('total',0);
+
+        // Crée le formulaire de facturation en passant le montant total comme option
+        $finaliserForm = $this->createForm(FinaliserForm::class, null, ['montant_total' => $total]);
 
         $deliveryForm->handleRequest($request);
         $finaliserForm->handleRequest($request);
@@ -29,27 +46,12 @@ class FinaliserController extends AbstractController
             // ...
 
             // Redirige vers une autre page
-            return $this->redirectToRoute('resto/index.html.twig');
+            return $this->redirectToRoute('resto/finalisercommande.html.twig');
         }
 
         if ($finaliserForm->isSubmitted() && $finaliserForm->isValid()) {
             // Logique de traitement pour le formulaire de facturation
             // ...
-
-            // Récupère les éléments du panier ici
-            $panier = []; 
-
-            // Initialise le montant total du panier
-            $montantTotalPanier = 0;
-
-            // Parcourt chaque élément du panier
-            foreach ($panier as $element) {
-                // Récupère le plat associé à l'élément du panier depuis le repository
-                $plat = $platsRepository->find($element['plat_id']);
-
-                // Ajoute le montant du plat multiplié par la quantité à total du panier
-                $montantTotalPanier += $plat->getPrix() * $element['quantity'];
-            }
 
             // Crée une nouvelle instance de la classe Commande
             $nouvelleCommande = new Commande();
@@ -64,14 +66,32 @@ class FinaliserController extends AbstractController
             $entityManager->persist($nouvelleCommande);
             $entityManager->flush();
 
-            // Redirige vers la page d'accueil
+            // Crée une instance de la classe Detail pour chaque plat dans le panier
+            foreach ($panier as $id => $quantity) {
+                $plat = $platsRepository->find($id);
+
+                // Crée une nouvelle instance de la classe Detail
+                $detail = new Detail();
+                $detail->setQuantite($quantity);
+                $detail->setPlats($plat);
+                $detail->setCommande($nouvelleCommande);
+
+                // Persiste la nouvelle instance de Detail dans la base de données
+                $entityManager->persist($detail);
+            }
+
+            // Flush pour sauvegarder les détails dans la base de données
+            $entityManager->flush();
+
+            $session->remove('panier');
+
             return $this->redirectToRoute('app_accueil');
         }
 
         return $this->render('resto/finaliser.html.twig', [
             'deliveryForm' => $deliveryForm->createView(),
             'FinaliserForm' => $finaliserForm->createView(),
+            'PaymentForm' => $paymentForm->createView(),
         ]);
     }
-
 }
