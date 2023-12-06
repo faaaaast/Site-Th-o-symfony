@@ -34,3 +34,4 @@ const Exercice1 = () => {
 }
 
 export default Exercice1;
+
